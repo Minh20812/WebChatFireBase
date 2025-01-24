@@ -4,7 +4,7 @@
 
 1. **Clone repository**
    ```bash
-   git clone https://github.com/Minh20812/.git
+   git clone https://github.com/Minh20812/Project-Tailwindcss-V3-with-Shadcn.git
    ```
 2. **Cài đặt các gói cần thiết**
    ```bash
