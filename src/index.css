@@ -1,0 +1,63 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+:root {
+  --color-primary: #a8715a;
+  --color-secondary: #dd8560;
+  --color-tertiary: #ffffff;
+  --color-quaternary: #f0f0f0;
+  --background: #f8f0e7; 
+  --input-background: #f9f9f9;
+  --title-and-active: #000000;
+  --body: #333333;
+  --label: #555555; 
+  --placeholder: #888888; 
+  --line: #e0cfba; 
+  --off-white: #fcfcfc; 
+} 
+*/
+
+/* body {
+  font-family: "Tenor Sans", sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0px;
+  color: var(--body);
+}
+
+h1 {
+  font-size: 18px;
+  line-height: 40px;
+  letter-spacing: 4px;
+}
+
+h2 {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 2px;
+}
+
+h3 {
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 2px;
+}
+
+.text-pl {
+  font-size: 16px;
+  line-height: 24px;
+  letter-spacing: 0px;
+}
+
+.text-pm {
+  font-size: 14px;
+  line-height: 24px;
+  letter-spacing: 0px;
+}
+.text-ps {
+  font-size: 12px;
+  line-height: 18px;
+  letter-spacing: 0px;
+} */
