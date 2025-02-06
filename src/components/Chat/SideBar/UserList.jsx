@@ -15,7 +15,7 @@ const UserList = () => {
             }`}
           >
             <Avatar className="h-10 w-10">
-              <AvatarImage src={`/placeholder.svg?height=40&width=40`} />
+              <AvatarImage />
               <AvatarFallback>{name[0]}</AvatarFallback>
             </Avatar>
             <div className="flex-1 text-left">

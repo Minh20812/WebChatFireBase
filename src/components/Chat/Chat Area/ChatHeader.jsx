@@ -4,7 +4,7 @@ const ChatHeader = () => {
   return (
     <div className="p-4 border-b flex items-center gap-3">
       <Avatar className="h-10 w-10">
-        <AvatarImage src={`/placeholder.svg?height=40&width=40`} />
+        <AvatarImage />
         <AvatarFallback>{selectedChat[0]}</AvatarFallback>
       </Avatar>
       <div>

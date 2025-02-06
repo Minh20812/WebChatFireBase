@@ -150,7 +150,7 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
                   }`}
                 >
                   <Avatar className="h-10 w-10 shrink-0">
-                    <AvatarImage src={`/placeholder.svg?height=40&width=40`} />
+                    <AvatarImage />
                     <AvatarFallback>
                       {user.user ? user.user[0] : "?"}
                     </AvatarFallback>
@@ -266,9 +266,7 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
                     }`}
                   >
                     <Avatar className="h-10 w-10 shrink-0">
-                      <AvatarImage
-                        src={`/placeholder.svg?height=40&width=40`}
-                      />
+                      <AvatarImage />
                       <AvatarFallback>
                         {user.user ? user.user[0] : "?"}
                       </AvatarFallback>
@@ -348,7 +346,7 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
               </Button>
 
               <Avatar className="h-10 w-10 bg-black text-white">
-                <AvatarImage src={`/placeholder.svg?height=40&width=40`} />
+                <AvatarImage />
                 <AvatarFallback>{selectedChat[0]}</AvatarFallback>
               </Avatar>
 
