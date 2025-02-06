@@ -49,12 +49,19 @@
 
 // export default MainRouter;
 
+import { useState } from "react";
 import Chat from "@/components/Chat";
 
 const MainRouter = ({ user }) => {
+  const [selectedChat, setSelectedChat] = useState(null);
+
   return (
     <div>
-      <Chat user={user} />
+      <Chat
+        user={user}
+        selectedChat={selectedChat}
+        setSelectedChat={setSelectedChat}
+      />
     </div>
   );
 };
