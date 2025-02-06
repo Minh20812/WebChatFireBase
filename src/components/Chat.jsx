@@ -25,8 +25,9 @@ import {
 } from "firebase/firestore";
 import { ref, push } from "firebase/database";
 import { signOut } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
-export default function Chat({ user, selectedChat, setSelectedChat }) {
+export default function Chat({ user, selectedChat, setSelectedChat, setUser }) {
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
@@ -35,6 +36,7 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
   // State để quản lý hiển thị menu cài đặt (bao gồm nút Logout)
   const [showSettingsOptions, setShowSettingsOptions] = useState(false);
   const lastMessageRef = useRef(null);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const q = query(collection(db, "messages"), orderBy("timestamp", "asc"));
@@ -101,6 +103,8 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
       console.log("Sign out successful");
       localStorage.removeItem("user");
       console.log("User removed from localStorage");
+      setUser(null);
+      navigate("/");
     } catch (error) {
       console.error("Error signing out: ", error);
     }

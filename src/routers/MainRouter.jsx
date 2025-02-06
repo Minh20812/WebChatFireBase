@@ -52,7 +52,7 @@
 import { useState } from "react";
 import Chat from "@/components/Chat";
 
-const MainRouter = ({ user }) => {
+const MainRouter = ({ user, setUser }) => {
   const [selectedChat, setSelectedChat] = useState(null);
 
   return (
@@ -61,6 +61,7 @@ const MainRouter = ({ user }) => {
         user={user}
         selectedChat={selectedChat}
         setSelectedChat={setSelectedChat}
+        setUser={setUser}
       />
     </div>
   );

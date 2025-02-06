@@ -1,25 +1,34 @@
 import { useState, useEffect } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import { auth } from "../firebase/firebase";
 import AuthRouter from "./AuthRouter";
 import MainRouter from "./MainRouter";
 
 const Routers = () => {
-  const [user, setUser] = useState(() => {
-    // Retrieve user from localStorage if it exists
-    const savedUser = localStorage.getItem("user");
-    return savedUser ? JSON.parse(savedUser) : null;
-  });
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Save user to localStorage whenever it changes
-    if (user) {
-      localStorage.setItem("user", JSON.stringify(user));
-    } else {
-      localStorage.removeItem("user");
-    }
-  }, [user]);
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setUser(user);
+        localStorage.setItem("user", JSON.stringify(user));
+      } else {
+        setUser(null);
+        localStorage.removeItem("user");
+      }
+      setLoading(false);
+    });
 
-  return (
-    <>{!user ? <AuthRouter setUser={setUser} /> : <MainRouter user={user} />}</>
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) return null;
+
+  return !user ? (
+    <AuthRouter setUser={setUser} />
+  ) : (
+    <MainRouter user={user} setUser={setUser} />
   );
 };
 

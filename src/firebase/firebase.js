@@ -20,4 +20,4 @@ const provider = new GoogleAuthProvider();
 const db = getFirestore(app);
 const realtimeDB = getDatabase(app);
 
-export { auth, provider, db, realtimeDB };
+export { auth, provider, db, realtimeDB, app };
