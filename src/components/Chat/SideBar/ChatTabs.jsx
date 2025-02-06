@@ -5,12 +5,15 @@ const ChatTabs = () => {
     <div className="flex border-b">
       <Button
         variant="ghost"
-        className="flex-1 rounded-none"
+        className="flex-1 rounded-none hover:bg-slate-100"
         onClick={() => setSelectedChat(null)}
       >
         Chats
       </Button>
-      <Button variant="ghost" className="flex-1 rounded-none">
+      <Button
+        variant="ghost"
+        className="flex-1 rounded-none hover:bg-slate-100"
+      >
         Users
       </Button>
     </div>

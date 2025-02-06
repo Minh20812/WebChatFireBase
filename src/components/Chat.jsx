@@ -13,7 +13,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
 import { useState, useEffect, useRef } from "react";
-import { db, realtimeDB } from "../firebase/firebase";
+import { db, realtimeDB, auth } from "../firebase/firebase";
 import {
   collection,
   addDoc,
@@ -24,6 +24,7 @@ import {
   getDocs,
 } from "firebase/firestore";
 import { ref, push } from "firebase/database";
+import { signOut } from "firebase/auth";
 
 export default function Chat({ user, selectedChat, setSelectedChat }) {
   const [message, setMessage] = useState("");
@@ -31,6 +32,8 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
   const [searchQuery, setSearchQuery] = useState("");
   const [users, setUsers] = useState([]);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  // State để quản lý hiển thị menu cài đặt (bao gồm nút Logout)
+  const [showSettingsOptions, setShowSettingsOptions] = useState(false);
   const lastMessageRef = useRef(null);
 
   useEffect(() => {
@@ -40,7 +43,7 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
       console.log(
         "Fetched Messages:",
         snapshot.docs.map((doc) => doc.data())
-      ); // Kiểm tra dữ liệu
+      );
       setMessages(snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() })));
     });
 
@@ -78,7 +81,7 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
         uid: user.uid,
       });
 
-      // Send real-time message
+      // Gửi tin nhắn realtime
       push(ref(realtimeDB, "messages"), {
         text: message,
         senderUser: user.displayName,
@@ -88,6 +91,18 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
       setMessage("");
     } catch (error) {
       console.error("Error sending message: ", error);
+    }
+  };
+
+  const logoutUser = async () => {
+    try {
+      console.log("Attempting to sign out...");
+      await signOut(auth);
+      console.log("Sign out successful");
+      localStorage.removeItem("user");
+      console.log("User removed from localStorage");
+    } catch (error) {
+      console.error("Error signing out: ", error);
     }
   };
 
@@ -137,28 +152,27 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
           {/* Chat/User List */}
           <ScrollArea className="flex-1">
             <div className="p-2 space-y-2">
-              {/* Chat List Items */}
-              {users.map((user) => (
+              {users.map((userItem) => (
                 <button
-                  key={user.id}
+                  key={userItem.id}
                   onClick={() => {
-                    setSelectedChat(user.user);
+                    setSelectedChat(userItem.user);
                     setIsMobileMenuOpen(false);
                   }}
                   className={`w-full flex items-center gap-3 p-2 rounded-lg hover:bg-slate-100 ${
-                    selectedChat === user.user ? "bg-slate-200" : ""
+                    selectedChat === userItem.user ? "bg-slate-200" : ""
                   }`}
                 >
                   <Avatar className="h-10 w-10 shrink-0">
                     <AvatarImage />
                     <AvatarFallback>
-                      {user.user ? user.user[0] : "?"}
+                      {userItem.user ? userItem.user[0] : "?"}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1 text-left">
                     <div className="flex justify-between">
                       <span className="font-medium">
-                        {user.user || "Unknown User"}
+                        {userItem.user || "Unknown User"}
                       </span>
                       <span className="text-xs text-muted-foreground shrink-0">
                         2m ago
@@ -184,9 +198,7 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
                     >
                       <div className="relative">
                         <Avatar className="h-8 w-8">
-                          <AvatarImage
-                         
-                          />
+                          <AvatarImage />
                           <AvatarFallback>{name[0]}</AvatarFallback>
                         </Avatar>
                         <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full ring-2 ring-background" />
@@ -199,15 +211,27 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
             </div>
           </ScrollArea>
 
-          {/* Settings Button */}
-          <div className="p-4 border-t">
+          {/* Settings Button với dropdown Logout */}
+          <div className="p-4 border-t relative">
             <Button
               variant="ghost"
               className="w-full justify-start gap-2 hover:bg-slate-100"
+              onClick={() => setShowSettingsOptions(!showSettingsOptions)}
             >
               <Settings className="h-4 w-4" />
               {user.displayName}
             </Button>
+            {showSettingsOptions && (
+              <div className="absolute left-4 right-4 mt-2 bg-white border rounded shadow-lg z-10">
+                <Button
+                  variant="destructive"
+                  className="w-full"
+                  onClick={logoutUser}
+                >
+                  Logout
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>
@@ -253,28 +277,27 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
             {/* Chat/User List */}
             <ScrollArea className="flex-1">
               <div className="p-2 space-y-2">
-                {/* Chat List Items */}
-                {users.map((user) => (
+                {users.map((userItem) => (
                   <button
-                    key={user.id}
+                    key={userItem.id}
                     onClick={() => {
-                      setSelectedChat(user.user);
+                      setSelectedChat(userItem.user);
                       setIsMobileMenuOpen(false);
                     }}
                     className={`w-full flex items-center gap-3 p-2 rounded-lg hover:bg-slate-100 ${
-                      selectedChat === user.user ? "bg-slate-200" : ""
+                      selectedChat === userItem.user ? "bg-slate-200" : ""
                     }`}
                   >
                     <Avatar className="h-10 w-10 shrink-0">
                       <AvatarImage />
                       <AvatarFallback>
-                        {user.user ? user.user[0] : "?"}
+                        {userItem.user ? userItem.user[0] : "?"}
                       </AvatarFallback>
                     </Avatar>
                     <div className="flex-1 text-left">
                       <div className="flex justify-between">
                         <span className="font-medium">
-                          {user.user || "Unknown User"}
+                          {userItem.user || "Unknown User"}
                         </span>
                         <span className="text-xs text-muted-foreground shrink-0">
                           2m ago
@@ -300,9 +323,7 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
                       >
                         <div className="relative">
                           <Avatar className="h-8 w-8">
-                            <AvatarImage
-                          
-                            />
+                            <AvatarImage />
                             <AvatarFallback>{name[0]}</AvatarFallback>
                           </Avatar>
                           <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full ring-2 ring-background" />
@@ -315,15 +336,27 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
               </div>
             </ScrollArea>
 
-            {/* Settings Button */}
-            <div className="p-4 border-t">
+            {/* Settings Button với dropdown Logout cho mobile */}
+            <div className="p-4 border-t relative">
               <Button
                 variant="ghost"
                 className="w-full justify-start gap-2 hover:bg-slate-100"
+                onClick={() => setShowSettingsOptions(!showSettingsOptions)}
               >
                 <Settings className="h-4 w-4" />
                 {user.displayName}
               </Button>
+              {showSettingsOptions && (
+                <div className="absolute left-4 right-4 mt-2 bg-white border rounded shadow-lg z-10">
+                  <Button
+                    variant="destructive"
+                    className="w-full"
+                    onClick={logoutUser}
+                  >
+                    Logout
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </SheetContent>
@@ -401,9 +434,7 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
                         />
 
                         <Avatar className="h-8 w-8 bg-black text-white">
-                          <AvatarImage
-                     
-                          />
+                          <AvatarImage />
                           <AvatarFallback>{msg.senderUser[0]}</AvatarFallback>
                         </Avatar>
 
