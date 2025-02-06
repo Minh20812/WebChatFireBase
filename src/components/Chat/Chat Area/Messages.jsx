@@ -7,7 +7,7 @@ const Messages = () => {
       <div className="space-y-4">
         <div className="flex gap-3">
           <Avatar className="h-8 w-8">
-            <AvatarImage src={`/placeholder.svg?height=32&width=32`} />
+            <AvatarImage  />
             <AvatarFallback>{selectedChat[0]}</AvatarFallback>
           </Avatar>
 

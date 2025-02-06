@@ -185,7 +185,7 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
                       <div className="relative">
                         <Avatar className="h-8 w-8">
                           <AvatarImage
-                            src={`/placeholder.svg?height=32&width=32`}
+                         
                           />
                           <AvatarFallback>{name[0]}</AvatarFallback>
                         </Avatar>
@@ -301,7 +301,7 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
                         <div className="relative">
                           <Avatar className="h-8 w-8">
                             <AvatarImage
-                              src={`/placeholder.svg?height=32&width=32`}
+                          
                             />
                             <AvatarFallback>{name[0]}</AvatarFallback>
                           </Avatar>
@@ -402,7 +402,7 @@ export default function Chat({ user, selectedChat, setSelectedChat }) {
 
                         <Avatar className="h-8 w-8 bg-black text-white">
                           <AvatarImage
-                            src={`/placeholder.svg?height=32&width=32`}
+                     
                           />
                           <AvatarFallback>{msg.senderUser[0]}</AvatarFallback>
                         </Avatar>

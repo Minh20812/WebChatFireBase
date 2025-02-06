@@ -43,7 +43,7 @@ const UserList = () => {
               >
                 <div className="relative">
                   <Avatar className="h-8 w-8">
-                    <AvatarImage src={`/placeholder.svg?height=32&width=32`} />
+                    <AvatarImage />
                     <AvatarFallback>{name[0]}</AvatarFallback>
                   </Avatar>
                   <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-green-500 rounded-full ring-2 ring-background" />
