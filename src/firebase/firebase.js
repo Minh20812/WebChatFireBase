@@ -1,23 +1,26 @@
+// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
-import { getDatabase } from "firebase/database";
 
+// Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyD14Z27MG7QSv4WAy95I_jb0lidu3sAXYc",
-  authDomain: "webchatapp-44c42.firebaseapp.com",
-  projectId: "webchatapp-44c42",
-  storageBucket: "webchatapp-44c42.firebasestorage.app",
-  messagingSenderId: "577848021460",
-  appId: "1:577848021460:web:b067813faa27eadff58641",
-  measurementId: "G-PVXVVLK2F3",
+  apiKey: import.meta.env.VITE_API_KEY,
+  authDomain: import.meta.env.VITE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_MESSAGING_SENDER_ID,
+  appId: import.meta.env.VITE_APP_ID,
 };
 
-// Khởi tạo Firebase
+// Initialize Firebase
 const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const provider = new GoogleAuthProvider();
-const db = getFirestore(app);
-const realtimeDB = getDatabase(app);
 
-export { auth, provider, db, realtimeDB, app };
+// ! authentication service reference
+export const auth = getAuth(app);
+
+//! google provider implement
+export const provider = new GoogleAuthProvider();
+
+//! database implement
+export const db = getFirestore(app);
