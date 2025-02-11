@@ -6,6 +6,9 @@ import InputArea from "@/components/chatarea/InputArea";
 import { AppContext } from "@/context/AppContext";
 import EmptyMessageArea from "@/components/chatarea/EmptyMessageArea";
 import { useContext } from "react";
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Menu } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const ChatLayout = () => {
   const { conversationId } = useContext(AppContext);
@@ -23,16 +26,41 @@ const ChatLayout = () => {
         {/* Main Chat Area */}
 
         {conversationId ? (
-          <div className="flex-1 flex flex-col">
+          <div className="flex-1 flex flex-col h-screen">
             {/* Chat Header */}
             <ChatHeader />
+
             {/* Messages Area */}
-            <MessagesArea />
+            <div className="flex-1 overflow-auto">
+              <MessagesArea />
+            </div>
+
             {/* Input Area */}
-            <InputArea />{" "}
+            <InputArea />
           </div>
         ) : (
           <div className="flex-1 flex flex-col">
+            <div className="flex items-center gap-3">
+              {/* Mobile menu trigger */}
+              <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="ghost" size="icon" className="md:hidden">
+                    <Menu className="w-5 h-5" />
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left" className="w-80 p-0 bg-white">
+                  {/* Mobile Sidebar Content */}
+                  <div className=" flex items-center justify-between">
+                    <SidebarHeader />
+                  </div>
+
+                  <div className="h-[calc(100vh-180px)]">
+                    <Conversations />
+                  </div>
+                </SheetContent>
+              </Sheet>
+            </div>
+
             <EmptyMessageArea />
           </div>
         )}

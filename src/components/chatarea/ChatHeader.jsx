@@ -1,6 +1,4 @@
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,16 +7,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import {
-  Search,
-  Settings,
-  LogOut,
-  Phone,
-  Video,
-  MoreVertical,
-  Menu,
-} from "lucide-react";
-
+import { Phone, Video, MoreVertical, Menu } from "lucide-react";
 import Conversations from "../sidebar/Conversations";
 import SidebarHeader from "../sidebar/Header";
 import { useContext } from "react";
@@ -26,6 +15,7 @@ import { AppContext } from "@/context/AppContext";
 
 const ChatHeader = () => {
   const { conversationName, conversationPhoto } = useContext(AppContext);
+
   return (
     <div className="h-[60px] border-b border-indigo-100 flex items-center justify-between px-4">
       <div className="flex items-center gap-3">

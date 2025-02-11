@@ -8,15 +8,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
-import { Search, Settings, LogOut, MessageSquare, Contact } from "lucide-react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-
+import { Search, Settings, LogOut } from "lucide-react";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
 import { AppContext } from "@/context/AppContext";
