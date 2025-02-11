@@ -54,6 +54,7 @@ const LoginPage = () => {
             Log in to your account
           </CardDescription>
         </CardHeader>
+
         <CardContent className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>
@@ -93,7 +94,8 @@ const LoginPage = () => {
             Sign in with Google
           </Button>
         </CardContent>
-        <CardFooter className="flex flex-wrap items-center justify-between gap-2">
+
+        <CardFooter className="flex flex-col sm:flex-row items-center justify-between gap-2 text-center sm:text-left">
           <div className="text-sm text-muted-foreground">
             <a
               href="/forgot-password"
