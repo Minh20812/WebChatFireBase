@@ -1,6 +1,3 @@
-import { signInWithPopup } from "firebase/auth";
-import React from "react";
-import { auth, provider } from "../firebase/firebase";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,17 +11,38 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Chrome } from "lucide-react";
+import { signInWithPopup } from "firebase/auth";
+import { auth, db, provider } from "@/firebase/firebase";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
 
 const LoginPage = () => {
-  const handleLogin = () => {
-    signInWithPopup(auth, provider)
-      .then((res) => {
-        console.log(res.user);
-      })
-      .catch((err) => {
-        console.log("login error", err);
-      });
+  const handleLogin = async (e) => {
+    e.preventDefault();
+
+    try {
+      const res = await signInWithPopup(auth, provider);
+      const user = res.user;
+      console.log(user);
+
+      const collectionRef = collection(db, "users");
+
+      const q = query(collectionRef, where("id", "==", user.uid));
+      const querySnapshot = await getDocs(q);
+
+      if (querySnapshot.empty) {
+        await addDoc(collectionRef, {
+          id: user.uid,
+          name: user.displayName,
+          email: user.email,
+          photo: user.photoURL,
+          createAt: serverTimestamp(),
+        });
+      }
+    } catch (error) {
+      console.error("Login error:", err);
+    }
   };
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
       <Card className="w-full max-w-md">

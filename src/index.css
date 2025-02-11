@@ -2,62 +2,51 @@
 @tailwind components;
 @tailwind utilities;
 
-/*
-:root {
-  --color-primary: #a8715a;
-  --color-secondary: #dd8560;
-  --color-tertiary: #ffffff;
-  --color-quaternary: #f0f0f0;
-  --background: #f8f0e7; 
-  --input-background: #f9f9f9;
-  --title-and-active: #000000;
-  --body: #333333;
-  --label: #555555; 
-  --placeholder: #888888; 
-  --line: #e0cfba; 
-  --off-white: #fcfcfc; 
-} 
-*/
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
 
-/* body {
-  font-family: "Tenor Sans", sans-serif;
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0px;
-  color: var(--body);
+    --card: 0 0% 100%;
+    --card-foreground: 240 10% 3.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 240 10% 3.9%;
+
+    --primary: 238 94% 67%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217 91% 60%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 240 5% 96%;
+    --muted-foreground: 240 3.8% 46.1%;
+
+    --accent: 238 94% 67%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 98%;
+
+    --border: 240 5.9% 90%;
+    --input: 240 5.9% 90%;
+    --ring: 238 94% 67%;
+
+    --radius: 0.5rem;
+  }
 }
 
-h1 {
-  font-size: 18px;
-  line-height: 40px;
-  letter-spacing: 4px;
+.message-purple {
+  background: linear-gradient(135deg, #6366f1 0%, #818cf8 100%);
+  color: white;
 }
 
-h2 {
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 2px;
+.message-blue {
+  background: linear-gradient(135deg, #3b82f6 0%, #60a5fa 100%);
+  color: white;
 }
 
-h3 {
-  font-size: 14px;
-  line-height: 20px;
-  letter-spacing: 2px;
+.hover-gradient:hover {
+  background: linear-gradient(135deg, #6366f1 0%, #3b82f6 100%);
+  color: white;
 }
-
-.text-pl {
-  font-size: 16px;
-  line-height: 24px;
-  letter-spacing: 0px;
-}
-
-.text-pm {
-  font-size: 14px;
-  line-height: 24px;
-  letter-spacing: 0px;
-}
-.text-ps {
-  font-size: 12px;
-  line-height: 18px;
-  letter-spacing: 0px;
-} */
