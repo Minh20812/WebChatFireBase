@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 const ChatLayout = () => {
   const { conversationId } = useContext(AppContext);
   return (
-    <div className="h-screen flex flex-col bg-white">
+    <div className="h-[100dvh] flex flex-col bg-white overflow-hidden">
       {/* Main Container */}
       <div className="flex-1 flex">
         {/* Sidebar - Hidden on mobile, shown on desktop */}
@@ -31,7 +31,7 @@ const ChatLayout = () => {
             <ChatHeader />
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-auto max-h-full">
               <MessagesArea />
             </div>
 
