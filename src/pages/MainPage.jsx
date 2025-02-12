@@ -31,7 +31,7 @@ const ChatLayout = () => {
             <ChatHeader />
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-auto max-h-full">
+            <div className="flex-1 overflow-auto">
               <MessagesArea />
             </div>
 
