@@ -26,7 +26,7 @@ const ChatLayout = () => {
         {/* Main Chat Area */}
 
         {conversationId ? (
-          <div className="flex-1 flex flex-col h-screen">
+          <div className="flex-1 flex flex-col max-h-screen">
             {/* Chat Header */}
             <ChatHeader />
 
