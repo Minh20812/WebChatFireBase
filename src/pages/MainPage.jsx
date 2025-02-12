@@ -26,17 +26,17 @@ const ChatLayout = () => {
         {/* Main Chat Area */}
 
         {conversationId ? (
-          <div className="flex-1 flex flex-col max-h-screen">
+          <div className="h-[100dvh] flex flex-col">
             {/* Chat Header */}
-            <ChatHeader />
+            <ChatHeader className="shrink-0" />
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-auto">
+            <div className="flex-1 overflow-y-auto">
               <MessagesArea />
             </div>
 
             {/* Input Area */}
-            <InputArea />
+            <InputArea className="shrink-0" />
           </div>
         ) : (
           <div className="flex-1 flex flex-col">
