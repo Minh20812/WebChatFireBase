@@ -53,7 +53,7 @@ const InputArea = () => {
               <Paperclip className="w-5 h-5" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="start">
+          <DropdownMenuContent align="start" className="bg-white">
             <DropdownMenuItem>
               <Image className="w-4 h-4 mr-2" />
               Send Image

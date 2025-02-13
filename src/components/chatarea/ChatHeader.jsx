@@ -12,13 +12,46 @@ import Conversations from "../sidebar/Conversations";
 import SidebarHeader from "../sidebar/Header";
 import { useContext } from "react";
 import { AppContext } from "@/context/AppContext";
+import {
+  collection,
+  query,
+  where,
+  getDocs,
+  deleteDoc,
+  doc,
+} from "firebase/firestore";
+import { db } from "../../firebase/firebase";
 
 const ChatHeader = () => {
-  const { conversationName, conversationPhoto } = useContext(AppContext);
+  const { conversationName, conversationPhoto, conversationId, user } =
+    useContext(AppContext);
+
+  // ✅ Hàm xóa tin nhắn
+  const handleClearChat = async () => {
+    if (!conversationId || !user) return;
+
+    const chatQuery = query(
+      collection(db, "chats"),
+      where("senderId", "in", [user.uid, conversationId]),
+      where("receiverId", "in", [user.uid, conversationId])
+    );
+
+    try {
+      const snapshot = await getDocs(chatQuery);
+      const deletePromises = snapshot.docs.map((docRef) =>
+        deleteDoc(doc(db, "chats", docRef.id))
+      );
+
+      await Promise.all(deletePromises);
+      console.log("Chat cleared!");
+    } catch (error) {
+      console.error("Error clearing chat:", error);
+    }
+  };
 
   return (
-    <div className="h-[60px] border-b border-indigo-100 flex items-center justify-between px-4">
-      <div className="flex items-center gap-3">
+    <div className="h-[60px] border-b border-indigo-100 flex items-center justify-between px-3 sm:px-4">
+      <div className="flex items-center gap-2 sm:gap-3">
         {/* Mobile menu trigger */}
         <Sheet>
           <SheetTrigger asChild>
@@ -26,13 +59,10 @@ const ChatHeader = () => {
               <Menu className="w-5 h-5" />
             </Button>
           </SheetTrigger>
-          <SheetContent side="left" className="w-80 p-0 bg-white">
-            {/* Mobile Sidebar Content */}
-            <div className=" flex items-center justify-between">
+          <SheetContent side="left" className="w-64 sm:w-80 p-0 bg-white">
+            <div className="flex items-center justify-between">
               <SidebarHeader />
             </div>
-
-            <Separator />
 
             <Separator />
 
@@ -45,16 +75,20 @@ const ChatHeader = () => {
         <img
           src={conversationPhoto}
           alt="Current chat"
-          className="w-10 h-10 rounded-full"
+          className="w-9 h-9 sm:w-10 sm:h-10 rounded-full"
         />
 
-        <div>
-          <h2 className="font-medium">{conversationName}</h2>
-          <p className="text-sm text-muted-foreground">Online</p>
+        <div className="flex flex-col justify-center">
+          <h2 className="font-medium text-sm sm:text-base">
+            {conversationName}
+          </h2>
+          <p className="text-xs sm:text-sm text-muted-foreground hidden sm:block">
+            Online
+          </p>
         </div>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1 sm:gap-2">
         <Button variant="ghost" size="icon">
           <Phone className="w-5 h-5" />
         </Button>
@@ -67,9 +101,11 @@ const ChatHeader = () => {
               <MoreVertical className="w-5 h-5" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
+          <DropdownMenuContent align="end" className="bg-white">
             <DropdownMenuItem>View Profile</DropdownMenuItem>
-            <DropdownMenuItem>Clear Chat</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleClearChat}>
+              Clear Chat
+            </DropdownMenuItem>
             <DropdownMenuItem className="text-red-600">
               Block User
             </DropdownMenuItem>
