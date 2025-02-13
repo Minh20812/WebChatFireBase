@@ -17,46 +17,140 @@ const Conversations = () => {
     setConversationName,
     setConversationId,
     setConversationPhoto,
+    conversationId,
   } = useContext(AppContext);
   const [conversations, setConversations] = useState([]);
 
-  // 🔹 Tách logic fetch dữ liệu ra function riêng
   const fetchConversations = useCallback(() => {
     if (!user) return;
 
-    const collectionRef = searchQuery.includes("@") ? "users" : "chats";
-    const field = searchQuery.includes("@") ? "email" : "receiverName";
-
-    let q = query(
-      collection(db, collectionRef),
-      where(field, ">=", searchQuery),
-      where(field, "<=", searchQuery + "\uf8ff")
-    );
-
-    if (!searchQuery.includes("@")) {
-      q = query(
-        q,
-        where("senderId", "==", user.uid),
+    if (!searchQuery || searchQuery.trim() === "") {
+      const q = query(
+        collection(db, "chats"),
+        where("createAt", "!=", null),
         orderBy("createAt", "desc")
       );
+
+      const unsubscribe = onSnapshot(q, (querySnapshot) => {
+        const conversationsArray = {};
+
+        querySnapshot.forEach((doc) => {
+          const message = doc.data();
+          const isSender = message.senderId === user.uid;
+          const isReceiver = message.receiverId === user.uid;
+
+          if (isSender || isReceiver) {
+            const chatId = isSender ? message.receiverId : message.senderId;
+
+            if (
+              !conversationsArray[chatId] ||
+              message.createAt > conversationsArray[chatId].createAt
+            ) {
+              conversationsArray[chatId] = {
+                id: chatId,
+                ...message,
+              };
+            }
+          }
+        });
+
+        // console.log(
+        //   "Fetched conversations:",
+        //   Object.values(conversationsArray)
+        // );
+        setConversations(Object.values(conversationsArray));
+      });
+
+      return unsubscribe;
     }
 
-    const unsubscribe = onSnapshot(q, (querySnapshot) => {
-      const conversationsArray = querySnapshot.docs.reduce((acc, doc) => {
-        const message = doc.data();
-        const chatId =
-          message.senderId === user.uid ? message.receiverId : message.senderId;
+    if (searchQuery.includes("@")) {
+      // Search in users collection by email
+      const q = query(
+        collection(db, "users"),
+        where("email", ">=", searchQuery),
+        where("email", "<=", searchQuery + "\uf8ff")
+      );
 
-        if (!acc[chatId]) {
-          acc[chatId] = { id: doc.id, ...message };
+      return onSnapshot(q, (querySnapshot) => {
+        const conversationsArray = [];
+        querySnapshot.forEach((doc) => {
+          const userData = doc.data();
+          conversationsArray.push(userData);
+        });
+        setConversations(conversationsArray);
+      });
+    } else {
+      // Search in chats collection by both receiver and sender names
+      const receiverQuery = query(
+        collection(db, "chats"),
+        where("receiverName", ">=", searchQuery),
+        where("receiverName", "<=", searchQuery + "\uf8ff"),
+        where("createAt", "!=", null),
+        orderBy("createAt", "desc")
+      );
+
+      const senderQuery = query(
+        collection(db, "chats"),
+        where("senderName", ">=", searchQuery),
+        where("senderName", "<=", searchQuery + "\uf8ff"),
+        where("createAt", "!=", null),
+        orderBy("createAt", "desc")
+      );
+
+      // Listen to both queries
+      const unsubscribeReceiver = onSnapshot(
+        receiverQuery,
+        (receiverSnapshot) => {
+          const unsubscribeSender = onSnapshot(
+            senderQuery,
+            (senderSnapshot) => {
+              const conversationsArray = {};
+
+              // Process receiver results
+              receiverSnapshot.forEach((doc) => {
+                const message = doc.data();
+                if (
+                  message.senderId === user.uid ||
+                  message.receiverId === user.uid
+                ) {
+                  const chatId =
+                    message.senderId === user.uid
+                      ? message.receiverId
+                      : message.senderId;
+                  conversationsArray[chatId] = { id: chatId, ...message };
+                }
+              });
+
+              // Process sender results
+              senderSnapshot.forEach((doc) => {
+                const message = doc.data();
+                if (
+                  message.senderId === user.uid ||
+                  message.receiverId === user.uid
+                ) {
+                  const chatId =
+                    message.senderId === user.uid
+                      ? message.receiverId
+                      : message.senderId;
+                  conversationsArray[chatId] = { id: chatId, ...message };
+                }
+              });
+
+              setConversations(Object.values(conversationsArray));
+            }
+          );
+
+          return () => {
+            unsubscribeSender();
+          };
         }
-        return acc;
-      }, {});
+      );
 
-      setConversations(Object.values(conversationsArray));
-    });
-
-    return unsubscribe;
+      return () => {
+        unsubscribeReceiver();
+      };
+    }
   }, [searchQuery, user]);
 
   useEffect(() => {
@@ -90,16 +184,23 @@ const Conversations = () => {
           const {
             id,
             receiverName,
+            senderName,
             name,
             receiverId,
+            senderId,
             photo,
             receiverPhoto,
+            senderPhoto,
             createAt,
             text,
             email,
           } = conversation;
-          const displayName = receiverName || name;
-          const displayPhoto = photo || receiverPhoto;
+          const displayName =
+            receiverId === user.uid ? senderName || name : receiverName || name;
+          const displayPhoto =
+            receiverPhoto === user.photoURL
+              ? senderPhoto || photo
+              : receiverPhoto || photo;
 
           return (
             <div
@@ -107,8 +208,15 @@ const Conversations = () => {
               className="flex items-center gap-3 p-4 hover:bg-indigo-50 cursor-pointer transition-colors"
               onClick={() => {
                 setConversationName(displayName);
-                setConversationId(receiverId || id);
+                setConversationId(
+                  receiverId === user.uid ? senderId : receiverId || id
+                );
                 setConversationPhoto(displayPhoto);
+                // console.log("displayName:", displayName);
+                // console.log("displayPhoto:", displayPhoto);
+                // console.log("receiverId:", receiverId);
+                // console.log("id:", id);
+                // console.log("conversationId:", conversationId);
               }}
             >
               {displayPhoto ? (

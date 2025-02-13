@@ -13,7 +13,14 @@ import { Separator } from "@/components/ui/separator";
 import { Chrome } from "lucide-react";
 import { signInWithPopup } from "firebase/auth";
 import { auth, db, provider } from "@/firebase/firebase";
-import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  serverTimestamp,
+  query,
+  where,
+  getDocs,
+} from "firebase/firestore";
 
 const LoginPage = () => {
   const handleLogin = async (e) => {
@@ -39,7 +46,7 @@ const LoginPage = () => {
         });
       }
     } catch (error) {
-      console.error("Login error:", err);
+      console.error("Login error:", error);
     }
   };
 

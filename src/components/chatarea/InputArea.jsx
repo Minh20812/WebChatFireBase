@@ -17,7 +17,7 @@ import { AppContext } from "@/context/AppContext";
 const InputArea = () => {
   const [text, setText] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const { conversationName, conversationId, conversationPhoto } =
+  const { conversationName, conversationId, conversationPhoto, user } =
     useContext(AppContext);
 
   const handleSumbit = async (e) => {
@@ -33,6 +33,7 @@ const InputArea = () => {
       text,
       senderId: auth.currentUser.uid,
       senderName: auth.currentUser.displayName,
+      senderPhoto: auth.currentUser.photoURL,
       receiverId: conversationId,
       receiverName: conversationName,
       receiverPhoto: conversationPhoto,
