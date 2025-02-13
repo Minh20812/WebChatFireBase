@@ -55,6 +55,17 @@ const MessagesArea = () => {
     }
   }, [messages]);
 
+  const formatMessageTime = (timestamp) => {
+    if (!timestamp) return "";
+
+    const messageDate = timestamp.toDate();
+    return messageDate.toLocaleTimeString("en-GB", {
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: false,
+    });
+  };
+
   return (
     <ScrollArea className="flex-1 p-4">
       <div className="space-y-4">
@@ -90,13 +101,15 @@ const MessagesArea = () => {
                   >
                     {message.text}
                     <div
-                      className={`text-xs ${
+                      className={`text-xs flex justify-end ${
                         message.senderId === user.uid
                           ? "text-primary-foreground/80"
                           : "text-muted-foreground"
                       }`}
                     >
-                      {message.time}
+                      <span className="text-xs text-muted-foreground">
+                        {formatMessageTime(message.createAt)}
+                      </span>
                     </div>
                   </div>
                   <Button

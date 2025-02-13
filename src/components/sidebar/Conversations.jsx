@@ -178,7 +178,7 @@ const Conversations = () => {
   };
 
   return (
-    <div>
+    <div className="w-full h-full max-w-sm mx-auto">
       <ScrollArea className="flex-1">
         {conversations.map((conversation) => {
           const {
@@ -205,7 +205,7 @@ const Conversations = () => {
           return (
             <div
               key={id}
-              className="flex items-center gap-3 p-4 hover:bg-indigo-50 cursor-pointer transition-colors"
+              className="flex items-center gap-3 p-3 sm:p-4 hover:bg-indigo-50 cursor-pointer transition-colors"
               onClick={() => {
                 setConversationName(displayName);
                 setConversationId(
@@ -224,22 +224,24 @@ const Conversations = () => {
                   src={displayPhoto}
                   onError={(e) => (e.target.style.display = "none")}
                   alt={displayName}
-                  className="w-10 h-10 rounded-full object-cover"
+                  className="w-9 h-9 sm:w-10 sm:h-10 rounded-full object-cover"
                 />
               ) : (
-                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-indigo-500 text-white text-lg font-bold">
+                <div className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-indigo-500 text-white text-lg font-bold">
                   {displayName?.charAt(0).toUpperCase()}
                 </div>
               )}
 
               <div className="flex-1 min-w-0">
                 <div className="flex justify-between items-start">
-                  <p className="font-medium truncate">{displayName}</p>
-                  <span className="text-xs text-muted-foreground">
+                  <p className="font-medium text-sm sm:text-base truncate">
+                    {displayName}
+                  </p>
+                  <span className="text-xs sm:text-sm text-muted-foreground">
                     {formatMessageTime(createAt)}
                   </span>
                 </div>
-                <p className="text-sm text-muted-foreground truncate">
+                <p className="text-xs sm:text-sm text-muted-foreground truncate">
                   {text || email}
                 </p>
               </div>
