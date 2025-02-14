@@ -63,8 +63,8 @@ This project is licensed under the MIT License. See the LICENSE file for more de
 ![Chat Interface](https://i.imgur.com/qwEcUGV.png)
 
 ### Video Demo
-[![Watch the demo](https://i.imgur.com/B6hgwBm.png)](https://example.com/demo-video.mp4)
-[![Watch the demo](https://i.imgur.com/B6hgwBm.png)](https://youtu.be/rACiLedZQmk?si=_O1mzPdp6ydCuyzo)
+[![Watch the demo](https://i.imgur.com/uHDSXx9.png)](https://youtu.be/rACiLedZQmk?si=_O1mzPdp6ydCuyzo)
+[![Watch the demo](https://i.imgur.com/zIdSH0x.png)](https://youtu.be/QtORh2tuFqs?si=qXaHb8JNYHQN1srB)
 
 For a live demo, click [here](https://webchatfirebase.vercel.app/).
 
