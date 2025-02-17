@@ -23,7 +23,7 @@ const Main = ({ room }) => {
     const q = query(
       collectionRef,
       where("room", "==", room),
-      orderBy("createAt", "asc")
+      orderBy("createdAt", "asc")
     );
 
     // Realtime listener

@@ -42,7 +42,7 @@ const LoginPage = () => {
           name: user.displayName,
           email: user.email,
           photo: user.photoURL,
-          createAt: serverTimestamp(),
+          createdAt: serverTimestamp(),
         });
       }
     } catch (error) {

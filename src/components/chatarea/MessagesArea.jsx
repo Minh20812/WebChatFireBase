@@ -34,7 +34,7 @@ const MessagesArea = () => {
           where("receiverId", "==", user.uid)
         )
       ),
-      orderBy("createAt", "desc")
+      orderBy("createdAt", "asc")
     );
 
     const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -42,7 +42,6 @@ const MessagesArea = () => {
         id: doc.id,
         ...doc.data(),
       }));
-
       setMessages(chatArray);
     });
 
@@ -57,7 +56,6 @@ const MessagesArea = () => {
 
   const formatMessageTime = (timestamp) => {
     if (!timestamp) return "";
-
     const messageDate = timestamp.toDate();
     return messageDate.toLocaleTimeString("en-GB", {
       hour: "2-digit",
@@ -66,63 +64,122 @@ const MessagesArea = () => {
     });
   };
 
+  const MessageContent = ({ message }) => {
+    // Nếu là tin nhắn hình ảnh
+    if (message.fileType?.startsWith("image")) {
+      return (
+        <div className="relative">
+          <img
+            src={message.fileUrl}
+            alt="Sent image"
+            className="max-w-[300px] rounded-lg cursor-pointer hover:opacity-95 transition-opacity"
+            style={{ maxHeight: "400px", objectFit: "contain" }}
+          />
+          <span
+            className={`block text-xs mt-1 ${
+              message.senderId === user.uid ? "text-black" : "text-gray-500"
+            }`}
+          >
+            {formatMessageTime(message.createdAt)}
+          </span>
+        </div>
+      );
+    }
+
+    // Nếu là tin nhắn file
+    if (message.fileUrl && !message.fileType?.startsWith("image")) {
+      return (
+        <div>
+          <a
+            href={message.fileUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-blue-500 hover:underline"
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+              />
+            </svg>
+            {message.text}
+          </a>
+          <span
+            className={`block text-xs mt-1 ${
+              message.senderId === user.uid ? "text-black" : "text-gray-500"
+            }`}
+          >
+            {formatMessageTime(message.createdAt)}
+          </span>
+        </div>
+      );
+    }
+
+    // Nếu là tin nhắn text thông thường
+    return (
+      <div>
+        <p>{message.text}</p>
+        <span
+          className={`block text-xs mt-1 ${
+            message.senderId === user.uid ? "text-black" : "text-gray-500"
+          }`}
+        >
+          {formatMessageTime(message.createdAt)}
+        </span>
+      </div>
+    );
+  };
+
   return (
     <ScrollArea className="flex-1 p-4">
       <div className="space-y-4">
-        {messages
-          .slice()
-          .reverse()
-          .map((message) => (
+        {messages.map((message) => (
+          <div
+            key={message.id}
+            className={`flex ${
+              message.senderId === user.uid ? "justify-end" : "justify-start"
+            }`}
+          >
             <div
-              key={message.id}
-              className={`flex ${
-                message.senderId === user.uid ? "justify-end" : "justify-start"
+              className={`flex gap-2 max-w-[70%] ${
+                message.senderId === user.uid ? "flex-row-reverse" : ""
               }`}
             >
-              <div
-                className={`flex gap-2 max-w-[70%] ${
-                  message.senderId === user.uid ? "flex-row-reverse" : ""
-                }`}
-              >
-                {message.senderId !== user.uid && (
-                  <img
-                    src={conversationPhoto}
-                    alt="Avatar"
-                    className="w-8 h-8 rounded-full self-end"
-                  />
-                )}
-                <div className="group relative">
-                  <div
-                    className={`p-3 rounded-lg ${
-                      message.senderId === user.uid
-                        ? "message-purple"
-                        : "bg-gray-100"
-                    }`}
-                  >
-                    {message.text}
-                    <div
-                      className={`text-xs flex justify-end ${
-                        message.senderId === user.uid
-                          ? "text-primary-foreground/80"
-                          : "text-muted-foreground"
-                      }`}
-                    >
-                      <span className="text-xs text-muted-foreground">
-                        {formatMessageTime(message.createAt)}
-                      </span>
-                    </div>
-                  </div>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="absolute top-0 -right-10 hidden group-hover:flex"
-                  >
-                    <Trash2 className="w-4 h-4 text-red-500" />
-                  </Button>
+              {message.senderId !== user.uid && (
+                <img
+                  src={conversationPhoto}
+                  alt="Avatar"
+                  className="w-8 h-8 rounded-full self-end"
+                />
+              )}
+              <div className="group relative">
+                <div
+                  className={`p-3 rounded-lg ${
+                    message.senderId === user.uid
+                      ? "bg-indigo-400 text-white"
+                      : "bg-gray-100"
+                  }`}
+                >
+                  <MessageContent message={message} />
                 </div>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  className="absolute top-0 -right-10 hidden group-hover:flex"
+                >
+                  <Trash2 className="w-4 h-4 text-red-500" />
+                </Button>
               </div>
             </div>
-          ))}
+          </div>
+        ))}
         <div ref={messagesEndRef} />
       </div>
     </ScrollArea>

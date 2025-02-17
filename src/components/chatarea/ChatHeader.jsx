@@ -22,7 +22,7 @@ import {
 } from "firebase/firestore";
 import { db } from "../../firebase/firebase";
 
-const ChatHeader = () => {
+const ChatHeader = ({ isOpenViewProfile, setIsOpenViewProfile }) => {
   const { conversationName, conversationPhoto, conversationId, user } =
     useContext(AppContext);
 
@@ -47,6 +47,10 @@ const ChatHeader = () => {
     } catch (error) {
       console.error("Error clearing chat:", error);
     }
+  };
+
+  const handleOpenModal = () => {
+    setIsOpenViewProfile(!isOpenViewProfile);
   };
 
   return (
@@ -102,7 +106,9 @@ const ChatHeader = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-white">
-            <DropdownMenuItem>View Profile</DropdownMenuItem>
+            <DropdownMenuItem onClick={handleOpenModal}>
+              View Profile
+            </DropdownMenuItem>
             <DropdownMenuItem onClick={handleClearChat}>
               Clear Chat
             </DropdownMenuItem>

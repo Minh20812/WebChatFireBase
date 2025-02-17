@@ -27,8 +27,8 @@ const Conversations = () => {
     if (!searchQuery || searchQuery.trim() === "") {
       const q = query(
         collection(db, "chats"),
-        where("createAt", "!=", null),
-        orderBy("createAt", "desc")
+        where("createdAt", "!=", null),
+        orderBy("createdAt", "desc")
       );
 
       const unsubscribe = onSnapshot(q, (querySnapshot) => {
@@ -44,7 +44,7 @@ const Conversations = () => {
 
             if (
               !conversationsArray[chatId] ||
-              message.createAt > conversationsArray[chatId].createAt
+              message.createdAt > conversationsArray[chatId].createdAt
             ) {
               conversationsArray[chatId] = {
                 id: chatId,
@@ -86,16 +86,16 @@ const Conversations = () => {
         collection(db, "chats"),
         where("receiverName", ">=", searchQuery),
         where("receiverName", "<=", searchQuery + "\uf8ff"),
-        where("createAt", "!=", null),
-        orderBy("createAt", "desc")
+        where("createdAt", "!=", null),
+        orderBy("createdAt", "desc")
       );
 
       const senderQuery = query(
         collection(db, "chats"),
         where("senderName", ">=", searchQuery),
         where("senderName", "<=", searchQuery + "\uf8ff"),
-        where("createAt", "!=", null),
-        orderBy("createAt", "desc")
+        where("createdAt", "!=", null),
+        orderBy("createdAt", "desc")
       );
 
       // Listen to both queries
@@ -191,7 +191,7 @@ const Conversations = () => {
             photo,
             receiverPhoto,
             senderPhoto,
-            createAt,
+            createdAt,
             text,
             email,
           } = conversation;
@@ -238,7 +238,7 @@ const Conversations = () => {
                     {displayName}
                   </p>
                   <span className="text-xs sm:text-sm text-muted-foreground">
-                    {formatMessageTime(createAt)}
+                    {formatMessageTime(createdAt)}
                   </span>
                 </div>
                 <p className="text-xs sm:text-sm text-muted-foreground truncate">

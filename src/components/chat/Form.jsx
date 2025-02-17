@@ -24,7 +24,7 @@ const Form = ({ room }) => {
         name: auth.currentUser.displayName,
         photo: auth.currentUser.photoURL,
       },
-      createAt: serverTimestamp(),
+      createdAt: serverTimestamp(),
     });
 
     setText("");
