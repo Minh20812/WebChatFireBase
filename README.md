@@ -46,35 +46,8 @@ If you would like to contribute to the project, please create a pull request wit
 - **Nguyen Quang Minh**: [ngquangminh2128@gmail.com](mailto:ngquangminh2128@gmail.com)
 - **GitHub**: [Minh (minova)](https://github.com/Minh20812)
 
-## License
+## Giấy Phép
 
-This project is licensed under the MIT License. See the LICENSE file for more details.
+Dự án này được cấp phép theo giấy phép MIT. Xem file LICENSE để biết thêm chi tiết.
 
-## Screenshots & Demo
-
-### Application Interface
-
-![Chat Interface](https://i.imgur.com/1smDSFG.png)
-![Chat Interface](https://i.imgur.com/0Im0duk.png)
-![Chat Interface](https://i.imgur.com/B6hgwBm.png)
-![Chat Interface](https://i.imgur.com/8aIfLxp.png)
-![Chat Interface](https://i.imgur.com/RAldBDh.png)
-![Chat Interface](https://i.imgur.com/VI1vbpj.png)
-![Chat Interface](https://i.imgur.com/kqYjsY0.png)
-![Chat Interface](https://i.imgur.com/qwEcUGV.png)
-
-### Video Demo
-
-[![Watch the demo](https://i.imgur.com/uHDSXx9.png)](https://youtu.be/rACiLedZQmk?si=_O1mzPdp6ydCuyzo)
-[![Watch the demo](https://i.imgur.com/zIdSH0x.png)](https://youtu.be/QtORh2tuFqs?si=qXaHb8JNYHQN1srB)
-
-For a live demo, click [here](https://webchatfirebase.vercel.app/).
-
-## Roadmap
-
-- [ ] Implement push notifications 📩
-- [ ] Add support for voice messages 🎙️
-- [ ] Enhance emoji reactions 😍
-- [ ] Improve performance with caching ⚡
-
-Stay tuned for future updates! 🚀
+#
