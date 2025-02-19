@@ -1,7 +1,8 @@
 import { useState, useContext, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Trash2 } from "lucide-react";
+import { Dialog, DialogContent } from "@/components/ui/dialog";
+import { Trash2, X } from "lucide-react";
 import { AppContext } from "@/context/AppContext";
 import {
   collection,
@@ -65,6 +66,12 @@ const MessagesArea = () => {
   };
 
   const MessageContent = ({ message }) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const handleBackgroundClick = (e) => {
+      if (e.target === e.currentTarget) {
+        setIsModalOpen(false);
+      }
+    };
     // Nếu là tin nhắn hình ảnh
     if (message.fileType?.startsWith("image")) {
       return (
@@ -74,7 +81,9 @@ const MessagesArea = () => {
             alt="Sent image"
             className="max-w-[300px] rounded-lg cursor-pointer hover:opacity-95 transition-opacity"
             style={{ maxHeight: "400px", objectFit: "contain" }}
+            onClick={() => setIsModalOpen(true)}
           />
+
           <span
             className={`block text-xs mt-1 ${
               message.senderId === user.uid ? "text-black" : "text-gray-500"
@@ -82,6 +91,32 @@ const MessagesArea = () => {
           >
             {formatMessageTime(message.createdAt)}
           </span>
+
+          <Dialog
+            open={!!isModalOpen}
+            onOpenChange={() => setIsModalOpen(false)}
+          >
+            <DialogContent className="max-w-[100vw] max-h-[100vh] p-0 border-0">
+              <button
+                onClick={() => setIsModalOpen(false)}
+                ss
+                className="fixed right-4 top-4 z-50 rounded-full bg-black/50 p-2 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none"
+              >
+                <X className="h-6 w-6 text-white" />
+                <span className="sr-only">Close</span>
+              </button>
+              <div
+                className="relative w-screen h-screen flex items-center justify-center bg-black/30"
+                onClick={handleBackgroundClick}
+              >
+                <img
+                  src={message.fileUrl || "/placeholder.svg"}
+                  alt="Full size"
+                  className="max-w-[95vw] max-h-[95vh] object-contain"
+                />
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       );
     }

@@ -12,9 +12,20 @@ import { Search, Settings, LogOut } from "lucide-react";
 import { signOut } from "firebase/auth";
 import { auth } from "../../firebase/firebase";
 import { AppContext } from "@/context/AppContext";
+import { SettingsModal } from "./SettingModal";
 
 const SidebarHeader = () => {
   const { searchQuery, setSearchQuery, user } = useContext(AppContext);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [currentUser, setCurrentUser] = useState({
+    name: "Your Name",
+    email: "your.email@example.com",
+    phone: "+1 234 567 890",
+    location: "New York, USA",
+    website: "https://yourwebsite.com",
+    bio: "Write something about yourself...",
+    avatar: "/placeholder.svg?height=96&width=96",
+  });
 
   const handleLogout = () => {
     signOut(auth);
@@ -51,7 +62,10 @@ const SidebarHeader = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="bg-white">
-            <DropdownMenuItem className="cursor-pointer">
+            <DropdownMenuItem
+              className="cursor-pointer"
+              onClick={() => setIsSettingsOpen(true)}
+            >
               <Settings className="w-4 h-4 mr-2" />
               Settings
             </DropdownMenuItem>
@@ -64,6 +78,12 @@ const SidebarHeader = () => {
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
+
+        <SettingsModal
+          isOpen={isSettingsOpen}
+          onClose={() => setIsSettingsOpen(false)}
+          user={currentUser}
+        />
       </div>
     </div>
   );
